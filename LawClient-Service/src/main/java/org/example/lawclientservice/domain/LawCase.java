@@ -1,18 +1,18 @@
-package org.example.domain.dto;
+package org.example.lawclientservice.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LawClientResponseDto {
+public class LawCase {
 
     private String id;
     private String name;
-    private List<LawCaseDto> lawCases;
+    private String lawyerId;
+    private Lawyer lawyer;
 }

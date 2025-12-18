@@ -1,12 +1,12 @@
-package org.example.controller;
+package org.example.lawclientservice.controller;
 
 
 
-import org.example.domain.LawCase;
-import org.example.domain.LawClient;
-import org.example.domain.dto.LawCaseDto;
-import org.example.domain.dto.LawClientRequestDto;
-import org.example.domain.dto.LawClientResponseDto;
+import org.example.lawclientservice.domain.LawCase;
+import org.example.lawclientservice.domain.LawClient;
+import org.example.lawclientservice.domain.dto.LawCaseDto;
+import org.example.lawclientservice.domain.dto.LawClientRequestDto;
+import org.example.lawclientservice.domain.dto.LawClientResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

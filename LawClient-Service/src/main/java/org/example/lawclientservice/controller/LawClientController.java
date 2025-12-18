@@ -1,15 +1,15 @@
-package org.example.controller;
+package org.example.lawclientservice.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.LawClient;
-import org.example.domain.dto.LawClientRequestDto;
-import org.example.domain.dto.LawClientResponseDto;
-import org.example.exception.LawClientNotFoundException;
-import org.example.service.LawClientService;
+import org.example.lawclientservice.domain.LawClient;
+import org.example.lawclientservice.domain.dto.LawClientRequestDto;
+import org.example.lawclientservice.domain.dto.LawClientResponseDto;
+import org.example.lawclientservice.exception.LawClientNotFoundException;
+import org.example.lawclientservice.service.LawClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

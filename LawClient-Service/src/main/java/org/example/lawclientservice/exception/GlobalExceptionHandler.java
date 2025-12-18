@@ -1,4 +1,4 @@
-package org.example.exception;
+package org.example.lawclientservice.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;

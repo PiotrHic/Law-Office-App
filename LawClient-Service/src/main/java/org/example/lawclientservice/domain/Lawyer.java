@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.lawclientservice.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LawCase {
+public class Lawyer {
 
     private String id;
     private String name;
-    private String lawyerId;
-    private Lawyer lawyer;
 }

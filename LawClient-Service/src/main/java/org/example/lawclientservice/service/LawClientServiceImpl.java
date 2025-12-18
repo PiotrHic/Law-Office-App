@@ -1,9 +1,9 @@
-package org.example.service;
+package org.example.lawclientservice.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.domain.LawClient;
-import org.example.repository.LawClientRepository;
+import org.example.lawclientservice.domain.LawClient;
+import org.example.lawclientservice.repository.LawClientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

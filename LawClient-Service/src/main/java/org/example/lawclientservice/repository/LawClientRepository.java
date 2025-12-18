@@ -1,6 +1,6 @@
-package org.example.repository;
+package org.example.lawclientservice.repository;
 
-import org.example.domain.LawClient;
+import org.example.lawclientservice.domain.LawClient;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 

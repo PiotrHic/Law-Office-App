@@ -1,7 +1,7 @@
-package org.example.service;
+package org.example.lawclientservice.service;
 
 
-import org.example.domain.LawClient;
+import org.example.lawclientservice.domain.LawClient;
 
 import java.util.List;
 import java.util.Optional;
