@@ -4,9 +4,9 @@ package org.example.lawclientservice.controller;
 
 import org.example.lawclientservice.domain.LawCase;
 import org.example.lawclientservice.domain.LawClient;
-import org.example.lawclientservice.domain.dto.LawCaseDto;
-import org.example.lawclientservice.domain.dto.LawClientRequestDto;
-import org.example.lawclientservice.domain.dto.LawClientResponseDto;
+import org.example.lawclientservice.client.dto.LawCaseDto;
+import org.example.lawclientservice.client.dto.LawClientRequestDto;
+import org.example.lawclientservice.client.dto.LawClientResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
