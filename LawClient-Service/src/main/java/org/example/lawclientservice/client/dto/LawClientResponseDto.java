@@ -1,4 +1,4 @@
-package org.example.lawclientservice.domain.dto;
+package org.example.lawclientservice.client.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
