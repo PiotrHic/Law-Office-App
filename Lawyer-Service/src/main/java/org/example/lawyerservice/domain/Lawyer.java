@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-@Document(collection = "Lawyers")
+@Document(collection = "lawyers_2026")
 public class Lawyer {
 
     public Lawyer(String id, String name) {
