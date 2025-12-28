@@ -1,8 +1,8 @@
 package org.example.lawyerservice.controller;
 
-import org.example.lawyerservice.controller.dto.LawCaseDto;
-import org.example.lawyerservice.controller.dto.LawyerRequestDto;
-import org.example.lawyerservice.controller.dto.LawyerResponseDto;
+import org.example.lawyerservice.client.dto.LawCaseDto;
+import org.example.lawyerservice.client.dto.LawyerRequestDto;
+import org.example.lawyerservice.client.dto.LawyerResponseDto;
 import org.example.lawyerservice.domain.LawCase;
 import org.example.lawyerservice.domain.Lawyer;
 import java.util.ArrayList;

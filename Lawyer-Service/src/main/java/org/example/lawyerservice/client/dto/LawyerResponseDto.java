@@ -1,4 +1,4 @@
-package org.example.lawyerservice.controller.dto;
+package org.example.lawyerservice.client.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

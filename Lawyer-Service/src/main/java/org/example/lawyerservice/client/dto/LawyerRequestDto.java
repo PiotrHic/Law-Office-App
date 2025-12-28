@@ -1,4 +1,4 @@
-package org.example.lawyerservice.controller.dto;
+package org.example.lawyerservice.client.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

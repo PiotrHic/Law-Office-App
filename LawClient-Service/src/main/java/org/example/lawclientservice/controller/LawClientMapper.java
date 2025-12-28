@@ -1,7 +1,5 @@
 package org.example.lawclientservice.controller;
 
-
-
 import org.example.lawclientservice.domain.LawCase;
 import org.example.lawclientservice.domain.LawClient;
 import org.example.lawclientservice.client.dto.LawCaseDto;
@@ -14,7 +12,7 @@ import java.util.stream.Collectors;
 public class LawClientMapper {
 
     // === Request DTO → Entity ===
-    public static LawClient toEntity( LawClientRequestDto dto) {
+    public static LawClient toEntity(LawClientRequestDto dto) {
         if (dto == null) return null;
 
         List<LawCase> lawCases = new ArrayList<>();
