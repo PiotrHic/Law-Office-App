@@ -1,14 +1,14 @@
-package org.example.lawclientservice.controller;
+package org.example.lawyerservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.example.lawclientservice.client.dto.LawClientRequestDto;
-import org.example.lawclientservice.client.dto.LawClientResponseDto;
-import org.example.lawclientservice.domain.LawClient;
-import org.example.lawclientservice.exception.LawClientNotFoundException;
-import org.example.lawclientservice.service.LawClientService;
+import org.example.lawyerservice.controller.dto.LawyerRequestDto;
+import org.example.lawyerservice.controller.dto.LawyerResponseDto;
+import org.example.lawyerservice.domain.Lawyer;
+import org.example.lawyerservice.exception.LawyerNotFoundException;
+import org.example.lawyerservice.service.LawyerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,111 +18,98 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/clients")
+@RequestMapping("/api/v1/lawyers")
 @Slf4j
-@Tag(name = "LawClient v1", description = "CRUD operations for law office clients (API v1)")
+@Tag(name = "Lawyer v1", description = "CRUD operations for law office lawyers (API v1)")
 @Validated
 public class LawClientControllerV1 {
 
-    private final LawClientService service;
+    private final LawyerService service;
 
-    public LawClientControllerV1(LawClientService service) {
-        this.service = service;
-    }
+    public LawClientControllerV1(LawyerService service) {this.service = service;}
 
     @PostMapping
-    @Operation(summary = "Create a client", description = "Creates a new client in the database")
-    public ResponseEntity<LawClientResponseDto> createClient(
-            @Valid @RequestBody LawClientRequestDto requestDto) {
+    @Operation(summary = "Create a lawyer", description = "Creates a new lawyer in the database")
+    public ResponseEntity<LawyerResponseDto> createLawyer(
+            @Valid @RequestBody LawyerRequestDto requestDto) {
 
-        log.info("POST /api/v1/clients with name={}", requestDto.getName());
+        log.info("POST /lawyers with name={}", requestDto.getName());
 
-        LawClient saved = service.createClient(LawClientMapper.toEntity(requestDto))
-                .orElseThrow(() -> new RuntimeException("Failed to create client"));
+        Lawyer saved = service.createLawyer(LawyerMapper.toEntity(requestDto))
+                .orElseThrow(() -> new RuntimeException("Failed to create lawyer"));
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(LawClientMapper.toDto(saved));
+                .body(LawyerMapper.toDto(saved));
     }
 
     @GetMapping("/by-id/{id}")
-    @Operation(summary = "Get client by ID", description = "Returns client data by the given ID")
-    public ResponseEntity<LawClientResponseDto> getClientById(@PathVariable String id) {
+    @Operation(summary = "Get lawyer by ID", description = "Returns lawyer data by the given ID")
+    public ResponseEntity<LawyerResponseDto> getLawyerById(@PathVariable String id) {
+        log.info("GET /lawyers/{}", id);
 
-        log.info("GET /api/v1/clients/by-id/{}", id);
+        Lawyer lawyer = service.getLawyerByID(id)
+                .orElseThrow(() -> new LawyerNotFoundException ("Lawyer not found with id=" + id));
 
-        LawClient client = service.getLawClientByID(id)
-                .orElseThrow(() ->
-                        new LawClientNotFoundException("LawClient not found with id=" + id)
-                );
-
-        return ResponseEntity.ok(LawClientMapper.toDto(client));
+        return ResponseEntity.ok(LawyerMapper.toDto(lawyer));
     }
 
     @GetMapping("/by-name/{name}")
-    @Operation(summary = "Get clients by name", description = "Returns a list of clients matching the given name")
-    public ResponseEntity<List<LawClientResponseDto>> getClientsByName(@PathVariable String name) {
+    @Operation(summary = "Get lawyers by name", description = "Returns a list of lawyers matching the given name")
+    public ResponseEntity<List<LawyerResponseDto>> getLawyersByName(@PathVariable String name) {
+        log.info("GET /lawyers/{}", name);
 
-        log.info("GET /api/v1/clients/by-name/{}", name);
-
-        List<LawClientResponseDto> clients = service.getLawClientsByName(name)
+        List<LawyerResponseDto> lawyers = service.getLawyerByName(name)
                 .stream()
-                .map(LawClientMapper::toDto)
-                .collect( Collectors.toList());
+                .map(LawyerMapper::toDto)
+                .toList();
 
-        return ResponseEntity.ok(clients);
+        return ResponseEntity.ok(lawyers);
     }
 
     @GetMapping
-    @Operation(summary = "Get all clients", description = "Returns a list of all clients in the database")
-    public ResponseEntity<List<LawClientResponseDto>> getAllClients(){
+    @Operation(summary = "Get all lawyers", description = "Returns a list of all lawyers in the database")
+    public ResponseEntity<List<LawyerResponseDto>> getAllLawyers() {
+        log.info("GET /lawyers");
 
-        log.info("GET /api/v1/clients");
-
-        List<LawClientResponseDto> clients = service.getAllLawClients()
+        List<LawyerResponseDto> clients = service.getAllLawyers()
                 .stream()
-                .map(LawClientMapper::toDto)
+                .map(LawyerMapper::toDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(clients);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update client", description = "Updates client data by the given ID")
-    public ResponseEntity<LawClientResponseDto> updateClient(
+    @Operation(summary = "Update lawyer", description = "Updates lawyer data by the given ID")
+    public ResponseEntity<LawyerResponseDto> updateLawyer(
             @PathVariable String id,
-            @Valid @RequestBody LawClientRequestDto requestDto){
+            @Valid @RequestBody LawyerRequestDto requestDto) {
 
-        log.info("PUT /api/v1/clients/{}", id);
+        log.info("PUT /lawyers/{}", id);
 
-        LawClient updated = service.updateLawClientById(id, LawClientMapper.toEntity(requestDto))
-                .orElseThrow(() ->
-                        new LawClientNotFoundException("Cannot update. LawClient not found with id=" + id)
-                );
+        Lawyer updated = service.updateLawyerById(id, LawyerMapper.toEntity(requestDto))
+                .orElseThrow(() -> new LawyerNotFoundException("Cannot update. Lawyer not found with id=" + id));
 
-        return ResponseEntity.ok(LawClientMapper.toDto(updated));
+        return ResponseEntity.ok(LawyerMapper.toDto(updated));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete client by ID", description = "Deletes the client with the given ID from the database")
-    public ResponseEntity<Void> deleteClient(@PathVariable String id){
+    @Operation(summary = "Delete lawyer by ID", description = "Deletes the lawyer with the given ID from the database")
+    public ResponseEntity<Void> deleteLawyer(@PathVariable String id) {
+        log.info("DELETE /lawyers/{}", id);
 
-        log.info("DELETE /api/v1/clients/{}", id);
-
-        service.deleteLawClientById(id)
-                .orElseThrow(() ->
-                        new LawClientNotFoundException("Cannot delete. LawClient not found with id=" + id)
-                );
+        service.deleteLawyerById(id)
+                .orElseThrow(() -> new LawyerNotFoundException("Cannot delete. Lawyer not found with id =" + id));
 
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
-    @Operation(summary = "Delete all clients", description = "Deletes all clients from the database")
-    public ResponseEntity<String> deleteAllClients(){
+    @Operation(summary = "Delete all lawyers", description = "Deletes all lawyers from the database")
+    public ResponseEntity<String> deleteAllLawyers() {
+        log.warn("DELETE /lawyers - deleting all lawyers");
 
-        log.warn("DELETE /api/v1/clients - deleting all clients");
-
-        String result = service.deleteAllLawClients();
+        String result = service.deleteAllLawyers();
         return ResponseEntity.ok(result);
     }
 }
