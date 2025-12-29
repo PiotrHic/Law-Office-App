@@ -1,4 +1,4 @@
-package org.example.lawcase.domain;
+package org.example.lawcaseservice.domain;
 
 import lombok.*;
 

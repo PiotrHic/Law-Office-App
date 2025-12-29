@@ -3,9 +3,9 @@ package org.example.lawclientservice.unit;
 import org.example.lawclientservice.controller.LawClientMapper;
 import org.example.lawclientservice.domain.LawCase;
 import org.example.lawclientservice.domain.LawClient;
-import org.example.lawclientservice.domain.dto.LawCaseDto;
-import org.example.lawclientservice.domain.dto.LawClientRequestDto;
-import org.example.lawclientservice.domain.dto.LawClientResponseDto;
+import org.example.lawclientservice.client.dto.LawCaseDto;
+import org.example.lawclientservice.client.dto.LawClientRequestDto;
+import org.example.lawclientservice.client.dto.LawClientResponseDto;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.example.lawcase.exception;
+package org.example.lawcaseservice.exception;
 
 import lombok.Builder;
 import lombok.Data;

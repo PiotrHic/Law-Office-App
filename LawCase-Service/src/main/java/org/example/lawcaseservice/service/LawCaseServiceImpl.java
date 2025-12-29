@@ -1,12 +1,13 @@
-package org.example.lawcase.service;
+package org.example.lawcaseservice.service;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.lawcase.domain.LawCase;
-import org.example.lawcase.repository.LawCaseRepository;
+import org.example.lawcaseservice.domain.LawCase;
+import org.example.lawcaseservice.repository.LawCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public class LawCaseServiceImpl implements LawCaseService {
     // CREATE
     @Override
     @Timed(value = "lawcase.create", percentiles = {0.95, 0.99})
-    public Optional<LawCase> createLawCase(LawCase lawCase) {
+    public Optional<LawCase> createLawCase( LawCase lawCase) {
         log.info("Creating LawCase with name='{}'", lawCase.getName());
         LawCase saved = repository.save(lawCase);
         log.info("Lawyer created with id={}", saved.getId());

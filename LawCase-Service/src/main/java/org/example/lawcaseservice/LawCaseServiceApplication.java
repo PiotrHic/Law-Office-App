@@ -1,13 +1,13 @@
-package org.example.lawcase;
+package org.example.lawcaseservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LawCaseApplication {
+public class LawCaseServiceApplication {
 
     public static void main ( String[] args ) {
-        SpringApplication.run ( LawCaseApplication.class, args );
+        SpringApplication.run ( LawCaseServiceApplication.class, args );
     }
 
 }

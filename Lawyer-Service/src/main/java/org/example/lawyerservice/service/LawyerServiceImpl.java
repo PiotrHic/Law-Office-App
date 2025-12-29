@@ -74,7 +74,7 @@ public class LawyerServiceImpl implements LawyerService {
         return repository.findById(lawyerId)
                 .map(client -> {
                     repository.delete(client);
-                    log.info("LawClient deleted id={}", lawyerId);
+                    log.info("Lawyer deleted id={}", lawyerId);
                     return client;
                 });
     }

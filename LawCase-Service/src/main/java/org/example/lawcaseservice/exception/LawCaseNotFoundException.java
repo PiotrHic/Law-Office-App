@@ -1,4 +1,4 @@
-package org.example.lawcase.exception;
+package org.example.lawcaseservice.exception;
 
 public class LawCaseNotFoundException extends RuntimeException {
 

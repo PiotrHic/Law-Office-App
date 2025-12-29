@@ -3,7 +3,7 @@ package org.example.lawclientservice.unit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.lawclientservice.controller.LawClientController;
 import org.example.lawclientservice.domain.LawClient;
-import org.example.lawclientservice.domain.dto.LawClientRequestDto;
+import org.example.lawclientservice.client.dto.LawClientRequestDto;
 import org.example.lawclientservice.exception.GlobalExceptionHandler;
 import org.example.lawclientservice.service.LawClientService;
 import org.junit.jupiter.api.Test;
