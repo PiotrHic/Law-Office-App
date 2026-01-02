@@ -1,6 +1,5 @@
 package org.example.lawcaseservice.domain;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -13,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-@Document(collection = "lawcases_2026")
+@Document(collection = "law_cases_2026")
 public class LawCase {
 
     public LawCase(String id, String name) {

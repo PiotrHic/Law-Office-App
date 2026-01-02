@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class LawyerController {
         Lawyer saved = service.createLawyer(LawyerMapper.toEntity(requestDto))
                 .orElseThrow(() -> new RuntimeException("Failed to create lawyer"));
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status( HttpStatus.CREATED)
                 .body(LawyerMapper.toDto(saved));
     }
 
@@ -47,14 +48,14 @@ public class LawyerController {
         log.info("GET /lawyers/{}", id);
 
         Lawyer lawyer = service.getLawyerByID(id)
-                .orElseThrow(() -> new LawyerNotFoundException("Lawyer not found with id=" + id));
+                .orElseThrow(() -> new LawyerNotFoundException ("Lawyer not found with id=" + id));
 
         return ResponseEntity.ok(LawyerMapper.toDto(lawyer));
     }
 
     @GetMapping("/by-name/{name}")
     @Operation(summary = "Get lawyers by name", description = "Returns a list of lawyers matching the given name")
-    public ResponseEntity<List<LawyerResponseDto>> getLawyersByName(@PathVariable String name) {
+    public ResponseEntity<List<LawyerResponseDto>> getLawyersByName( @PathVariable String name) {
         log.info("GET /lawyers/{}", name);
 
         List<LawyerResponseDto> lawyers = service.getLawyerByName(name)
@@ -74,7 +75,6 @@ public class LawyerController {
                 .stream()
                 .map(LawyerMapper::toDto)
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(clients);
     }
 

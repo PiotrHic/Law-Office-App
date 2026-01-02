@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Law-Office-App.iml" filepath="$PROJECT_DIR$/Law-Office-App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LawCase-Service/LawCase-Service.iml" filepath="$PROJECT_DIR$/LawCase-Service/LawCase-Service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lawyer-Service/Lawyer-Service.iml" filepath="$PROJECT_DIR$/Lawyer-Service/Lawyer-Service.iml" />
     </modules>
   </component>
 </project>

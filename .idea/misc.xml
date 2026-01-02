@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/LawClient-Service/pom.xml" />
         <option value="$PROJECT_DIR$/Lawyer-Service/pom.xml" />
         <option value="$PROJECT_DIR$/LawCase/pom.xml" />
+        <option value="$PROJECT_DIR$/LawCase-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/API-Gateway/pom.xml" />
       </list>
     </option>
   </component>

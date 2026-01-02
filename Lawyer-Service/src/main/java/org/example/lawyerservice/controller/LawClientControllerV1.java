@@ -74,7 +74,7 @@ public class LawClientControllerV1 {
         List<LawyerResponseDto> clients = service.getAllLawyers()
                 .stream()
                 .map(LawyerMapper::toDto)
-                .collect(Collectors.toList());
+                .collect( Collectors.toList());
 
         return ResponseEntity.ok(clients);
     }
