@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # Prometheus self
+  - job_name: 'prometheus'
+    static_configs:
+      - targets:
+          - localhost:9090  # jeśli Prometheus w Dockerze ma expose 9090:9090
+
+  # Spring Boot microservices na Windowsie
+  - job_name: 'law-office-services'
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - host.docker.internal:8010  # API Gateway
+          - host.docker.internal:8011  # Lawyer Service
+          - host.docker.internal:8012  # LawCase Service
+          - host.docker.internal:8013  # LawClient Service
