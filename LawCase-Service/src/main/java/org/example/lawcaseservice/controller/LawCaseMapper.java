@@ -26,6 +26,10 @@ public class LawCaseMapper {
         return LawCaseResponseDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .lawClientId(entity.getLawClientId())
+                .lawClient(entity.getLawClient())
+                .lawyerId(entity.getLawyerId())
+                .lawyer(entity.getLawyer())
                 .build();
     }
 

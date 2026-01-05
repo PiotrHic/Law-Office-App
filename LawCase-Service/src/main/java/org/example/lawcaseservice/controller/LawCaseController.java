@@ -37,7 +37,7 @@ public class LawCaseController {
         LawCase saved = service.createLawCase(LawCaseMapper.toEntity(requestDto))
                 .orElseThrow(() -> new RuntimeException("Failed to create lawCase"));
 
-        return ResponseEntity.status( HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(LawCaseMapper.toDto(saved));
     }
 
@@ -89,7 +89,8 @@ public class LawCaseController {
         LawCase updated = service.updateLawCaseById(id, LawCaseMapper.toEntity(requestDto))
                 .orElseThrow(() -> new LawCaseNotFoundException("Cannot update. LawCase not found with id=" + id));
 
-        return ResponseEntity.ok(LawCaseMapper.toDto(updated));
+        LawCaseResponseDto dto = LawCaseMapper.toDto(updated);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
