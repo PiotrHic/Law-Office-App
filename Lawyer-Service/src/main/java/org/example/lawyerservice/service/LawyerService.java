@@ -4,15 +4,16 @@ import org.example.lawyerservice.domain.Lawyer;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface LawyerService {
 
     Optional<Lawyer> createLawyer(Lawyer lawyer);
-    Optional<Lawyer> getLawyerByID(String lawyerId);
+    Optional<Lawyer> getLawyerById(UUID lawyerId);
     List<Lawyer> getLawyerByName(String name);
     List<Lawyer> getAllLawyers();
-    Optional<Lawyer> updateLawyerById(String lawyerId, Lawyer lawyer);
-    Optional<Lawyer> deleteLawyerById(String lawyerId);
+    Optional<Lawyer> updateLawyerById(UUID lawyerId, Lawyer lawyer);
+    Optional<Lawyer> deleteLawyerById(UUID lawyerId);
     String deleteAllLawyers();
 }
 

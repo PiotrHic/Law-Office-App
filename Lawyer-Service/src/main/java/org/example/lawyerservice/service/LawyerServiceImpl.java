@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +23,9 @@ public class LawyerServiceImpl implements LawyerService {
     @Timed(value = "lawyer.create", percentiles = {0.95, 0.99})
     public Optional<Lawyer> createLawyer(Lawyer lawyer) {
         log.info("Creating Lawyer with name='{}'", lawyer.getName());
+        if (lawyer.getId() == null) {
+            lawyer.setId(UUID.randomUUID());
+        }
         Lawyer saved = repository.save(lawyer);
         log.info("Lawyer created with id={}", saved.getId());
         return Optional.of(saved);
@@ -30,9 +34,9 @@ public class LawyerServiceImpl implements LawyerService {
     // READ by ID
     @Override
     @Timed(value = "lawyer.getById", percentiles = {0.95, 0.99})
-    public Optional<Lawyer> getLawyerByID(String lawyerId) {
+    public Optional<Lawyer> getLawyerById(UUID lawyerId) {
         log.debug("Fetching Lawyer by id={}", lawyerId);
-        return repository.findById(lawyerId);
+        return repository.findById((lawyerId));
     }
 
     // READ by name
@@ -54,7 +58,7 @@ public class LawyerServiceImpl implements LawyerService {
     // UPDATE by ID
     @Override
     @Timed(value = "lawyer.update", percentiles = {0.95, 0.99})
-    public Optional<Lawyer> updateLawyerById(String lawyerId, Lawyer lawyer) {
+    public Optional<Lawyer> updateLawyerById(UUID lawyerId, Lawyer lawyer) {
         log.info("Updating Lawyer id={}", lawyerId);
         return repository.findById(lawyerId)
                 .map(existing -> {
@@ -69,7 +73,7 @@ public class LawyerServiceImpl implements LawyerService {
     // DELETE by ID
     @Override
     @Timed(value = "lawyer.delete", percentiles = {0.95, 0.99})
-    public Optional<Lawyer> deleteLawyerById(String lawyerId) {
+    public Optional<Lawyer> deleteLawyerById(UUID lawyerId) {
         log.info("Deleting Lawyer id={}", lawyerId);
         return repository.findById(lawyerId)
                 .map(client -> {

@@ -2,18 +2,20 @@ package org.example.lawyerservice.domain;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class LawCase {
 
-    public LawCase(String id, String name) {
+    public LawCase(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    private String id;
+    private UUID id;
     private String name;
     private String lawyerId;
     //private String lawClientId;

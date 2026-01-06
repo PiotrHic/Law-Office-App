@@ -1,6 +1,8 @@
 package org.example.lawyerservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,12 +28,20 @@ import java.util.stream.Collectors;
 @Validated
 public class LawyerController {
 
+    private final String DESCRIPTION_404_ID = "Lawyer was not found by id";
+    private final String DESCRIPTION_500_SHORT = "Some internal server error";
+
     private final LawyerService service;
 
     public LawyerController(LawyerService service) {this.service = service;}
 
+    @Operation(summary = "Create a lawyer", description = "Creates a new lawyer in the database - POST /api/lawyers")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Lawyer was created"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @PostMapping
-    @Operation(summary = "Create a lawyer", description = "Creates a new lawyer in the database")
     public ResponseEntity<LawyerResponseDto> createLawyer(
             @Valid @RequestBody LawyerRequestDto requestDto) {
 
@@ -43,21 +54,33 @@ public class LawyerController {
                 .body(LawyerMapper.toDto(saved));
     }
 
+    @Operation(summary = "Get Lawyer by Id", description = "Returns Lawyer data by the given Id " +
+            "- GET /api/lawyers/by-id/{id}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lawyer was delivered by Id"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @GetMapping("/by-id/{id}")
-    @Operation(summary = "Get lawyer by ID", description = "Returns lawyer data by the given ID")
-    public ResponseEntity<LawyerResponseDto> getLawyerById(@PathVariable String id) {
+    public ResponseEntity<LawyerResponseDto> getLawyerById(@PathVariable UUID id) {
         log.info("GET /lawyers/{}", id);
 
-        Lawyer lawyer = service.getLawyerByID(id)
+        Lawyer lawyer = service.getLawyerById(id)
                 .orElseThrow(() -> new LawyerNotFoundException ("Lawyer not found with id=" + id));
 
         return ResponseEntity.ok(LawyerMapper.toDto(lawyer));
     }
 
+    @Operation(summary = "Get Lawyer by name", description = "Returns Lawyer data by the given name" +
+            "- GET /api/lawyers/by-name/{name}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lawyer was delivered by name"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @GetMapping("/by-name/{name}")
-    @Operation(summary = "Get lawyers by name", description = "Returns a list of lawyers matching the given name")
-    public ResponseEntity<List<LawyerResponseDto>> getLawyersByName( @PathVariable String name) {
-        log.info("GET /lawyers/{}", name);
+    public ResponseEntity<List<LawyerResponseDto>> getLawyersByName(@PathVariable String name) {
+        log.info("GET /lawyer/by-name/{}", name);
 
         List<LawyerResponseDto> lawyers = service.getLawyerByName(name)
                 .stream()
@@ -67,10 +90,16 @@ public class LawyerController {
         return ResponseEntity.ok(lawyers);
     }
 
+    @Operation(summary = "Get all Lawyers", description = "Returns a list of all Lawyers in the database" +
+            "- GET /api/lawyers")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lawyer was delivered by name"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @GetMapping
-    @Operation(summary = "Get all lawyers", description = "Returns a list of all lawyers in the database")
     public ResponseEntity<List<LawyerResponseDto>> getAllLawyers() {
-        log.info("GET /lawyers");
+        log.info("GET api/lawyers");
 
         List<LawyerResponseDto> clients = service.getAllLawyers()
                 .stream()
@@ -79,13 +108,18 @@ public class LawyerController {
         return ResponseEntity.ok(clients);
     }
 
+    @Operation(summary = "Update lawyer", description = "Updates lawyer data by the given Id - GET /api/lawyers")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lawyer was updated by Id"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @PutMapping("/{id}")
-    @Operation(summary = "Update lawyer", description = "Updates lawyer data by the given ID")
     public ResponseEntity<LawyerResponseDto> updateLawyer(
-            @PathVariable String id,
+            @PathVariable UUID  id,
             @Valid @RequestBody LawyerRequestDto requestDto) {
 
-        log.info("PUT /lawyers/{}", id);
+        log.info("PUT api/lawyers/{}", id);
 
         Lawyer updated = service.updateLawyerById(id, LawyerMapper.toEntity(requestDto))
                 .orElseThrow(() -> new LawyerNotFoundException("Cannot update. Lawyer not found with id=" + id));
@@ -93,10 +127,16 @@ public class LawyerController {
         return ResponseEntity.ok(LawyerMapper.toDto(updated));
     }
 
+    @Operation(summary = "Delete lawyer by Id", description = "Deletes the lawyer with the given ID from the database" +
+            " - DELETE api/lawyers/{id}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lawyer was deleted by Id"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete lawyer by ID", description = "Deletes the lawyer with the given ID from the database")
-    public ResponseEntity<Void> deleteLawyer(@PathVariable String id) {
-        log.info("DELETE /lawyers/{}", id);
+    public ResponseEntity<Void> deleteLawyer(@PathVariable UUID id) {
+        log.info("DELETE api/lawyers/{}", id);
 
         service.deleteLawyerById(id)
                 .orElseThrow(() -> new LawyerNotFoundException("Cannot delete. Lawyer not found with id =" + id));
@@ -104,10 +144,16 @@ public class LawyerController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Delete all lawyers", description = "Deletes all lawyers from the database" +
+            " - DELETE api/lawyers")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Delete all Lawyers"),
+            @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
+            @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
+    })
     @DeleteMapping
-    @Operation(summary = "Delete all lawyers", description = "Deletes all lawyers from the database")
     public ResponseEntity<String> deleteAllLawyers() {
-        log.warn("DELETE /lawyers - deleting all lawyers");
+        log.warn("DELETE api/lawyers - deleting all lawyers");
 
         String result = service.deleteAllLawyers();
         return ResponseEntity.ok(result);

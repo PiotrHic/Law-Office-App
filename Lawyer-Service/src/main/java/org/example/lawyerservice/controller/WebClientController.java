@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -54,11 +55,11 @@ public class WebClientController {
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
     @GetMapping("/getLawCases" + NUMBER_QUERY_PATH)
-    ResponseEntity<LawyerResponseDto> getLawCaseByLawyerId(@PathVariable String lawyerId){
+    ResponseEntity<LawyerResponseDto> getLawCaseByLawyerId(@PathVariable UUID lawyerId){
 
         log.info("GET /lawyers/{}", lawyerId);
 
-        Lawyer founded = lawyerService.getLawyerByID(lawyerId).orElseThrow(()
+        Lawyer founded = lawyerService.getLawyerById(lawyerId).orElseThrow(()
                 -> new LawyerNotFoundException ("Lawyer not found with id=" + lawyerId));
 
         List<LawCase> lawCases = new ArrayList<>();

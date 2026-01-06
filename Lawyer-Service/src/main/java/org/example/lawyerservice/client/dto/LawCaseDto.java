@@ -7,13 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class LawCaseDto {
 
-    private String id;
+    private UUID id;
 
     @NotBlank(message = "Law case name cannot be blank")
     @Size(min = 3, message = "Law case name must be at least 3 characters long")

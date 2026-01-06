@@ -7,20 +7,15 @@ import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @HttpExchange
 public interface LawCaseWebClient {
 
-    static String ID = "lawyerId";
     static String ID_PATH = "/{lawyerId}";
 
     @GetExchange("/api/cases/webclient/sendLawCasesToLawyerService" + ID_PATH)
-    public List<LawCaseDto> getLawCasesByLawyerId( @PathVariable(ID) String lawyerId);
-
-    /*
-    @GetExchange("/api/lawcase/webclient/sendLawCases-WithLawClients" + ID_PATH)
-    public List<LawCaseDto> getLawCasesWithLawClientsByLawyerId(@PathVariable(ID) String lawyerId);
-     */
+    public List<LawCaseDto> getLawCasesByLawyerId( @PathVariable UUID lawyerId);
 
 }
