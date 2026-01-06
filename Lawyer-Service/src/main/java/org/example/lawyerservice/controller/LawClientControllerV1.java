@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.example.lawyerservice.client.dto.LawyerRequestDto;
 import org.example.lawyerservice.client.dto.LawyerResponseDto;
+import org.example.lawyerservice.controller.mapper.LawyerMapper;
 import org.example.lawyerservice.domain.Lawyer;
 import org.example.lawyerservice.exception.LawyerNotFoundException;
 import org.example.lawyerservice.service.LawyerService;
@@ -35,7 +36,7 @@ public class LawClientControllerV1 {
 
         log.info("POST /lawyers with name={}", requestDto.getName());
 
-        Lawyer saved = service.createLawyer(LawyerMapper.toEntity(requestDto))
+        Lawyer saved = service.createLawyer( LawyerMapper.toEntity(requestDto))
                 .orElseThrow(() -> new RuntimeException("Failed to create lawyer"));
 
         return ResponseEntity.status(HttpStatus.CREATED)

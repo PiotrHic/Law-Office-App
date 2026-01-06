@@ -34,10 +34,10 @@ public class GatewayRoutesConfig {
                 .route("Lawyer-Service", r -> r
                         .path("/api/lawyers/**")
                         .and()
-                        .method(HttpMethod.GET)
+                        .method(HttpMethod.GET,HttpMethod.POST,HttpMethod.PUT, HttpMethod.DELETE)
                         .uri("http://localhost:8011")
                 )
-
+                /*
                 .route("Lawyer-Service-Protected", r -> r
                         .path("/api/lawyers/**")
                         .and()
@@ -47,15 +47,15 @@ public class GatewayRoutesConfig {
                         )
                         .uri("http://localhost:8011")
                 )
-
+                */
                 // ===== LAWCASE SERVICE =====
                 .route("LawCase-Service", r -> r
                         .path("/api/cases/**")
                         .and()
-                        .method(HttpMethod.GET)
+                        .method(HttpMethod.GET,HttpMethod.POST,HttpMethod.PUT, HttpMethod.DELETE)
                         .uri("http://localhost:8012")
                 )
-
+                /*
                 .route("LawCase-Service-Protected", r -> r
                         .path("/api/cases/**")
                         .and()
@@ -65,15 +65,15 @@ public class GatewayRoutesConfig {
                         )
                         .uri("http://localhost:8012")
                 )
-
+                */
                 // ===== LAWCLIENT SERVICE =====
                 .route("LawClient-Service", r -> r
                         .path("/api/clients/**")
                         .and()
-                        .method(HttpMethod.GET)
+                        .method(HttpMethod.GET,HttpMethod.POST,HttpMethod.PUT, HttpMethod.DELETE)
                         .uri("http://localhost:8013")
                 )
-
+                /*
                 .route("LawClient-Service-Protected", r -> r
                         .path("/api/clients/**")
                         .and()
@@ -83,7 +83,7 @@ public class GatewayRoutesConfig {
                         )
                         .uri("http://localhost:8013")
                 )
-
+                */
                 .build();
     }
 

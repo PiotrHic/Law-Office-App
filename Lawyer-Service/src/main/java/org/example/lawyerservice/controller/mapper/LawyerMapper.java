@@ -1,14 +1,17 @@
-package org.example.lawyerservice.controller;
+package org.example.lawyerservice.controller.mapper;
 
 import org.example.lawyerservice.client.dto.LawCaseDto;
 import org.example.lawyerservice.client.dto.LawyerRequestDto;
 import org.example.lawyerservice.client.dto.LawyerResponseDto;
 import org.example.lawyerservice.domain.LawCase;
 import org.example.lawyerservice.domain.Lawyer;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class LawyerMapper {
 
     // === Request DTO → Entity ===

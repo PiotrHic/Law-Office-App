@@ -15,7 +15,7 @@ public interface LawCaseWebClient {
     static String ID = "lawyerId";
     static String ID_PATH = "/{lawyerId}";
 
-    @GetExchange("/api/cases/webclient/sendLawCases" + ID_PATH)
+    @GetExchange("/api/cases/webclient/sendLawCasesToLawyerService" + ID_PATH)
     public List<LawCaseDto> getLawCasesByLawyerId( @PathVariable(ID) String lawyerId);
 
     /*

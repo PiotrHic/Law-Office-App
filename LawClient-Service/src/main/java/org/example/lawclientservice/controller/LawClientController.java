@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.example.lawclientservice.controller.mapper.LawClientMapper;
 import org.example.lawclientservice.domain.LawClient;
 import org.example.lawclientservice.client.dto.LawClientRequestDto;
 import org.example.lawclientservice.client.dto.LawClientResponseDto;
@@ -38,7 +39,7 @@ public class LawClientController {
 
         log.info("POST /clients with name={}", requestDto.getName());
 
-        LawClient saved = service.createClient(LawClientMapper.toEntity(requestDto))
+        LawClient saved = service.createClient( LawClientMapper.toEntity(requestDto))
                 .orElseThrow(() -> new RuntimeException("Failed to create client"));
 
         return ResponseEntity.status(HttpStatus.CREATED)

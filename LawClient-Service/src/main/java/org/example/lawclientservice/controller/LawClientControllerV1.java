@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.example.lawclientservice.client.dto.LawClientRequestDto;
 import org.example.lawclientservice.client.dto.LawClientResponseDto;
+import org.example.lawclientservice.controller.mapper.LawClientMapper;
 import org.example.lawclientservice.domain.LawClient;
 import org.example.lawclientservice.exception.LawClientNotFoundException;
 import org.example.lawclientservice.service.LawClientService;
@@ -37,7 +38,7 @@ public class LawClientControllerV1 {
 
         log.info("POST /api/v1/clients with name={}", requestDto.getName());
 
-        LawClient saved = service.createClient(LawClientMapper.toEntity(requestDto))
+        LawClient saved = service.createClient( LawClientMapper.toEntity(requestDto))
                 .orElseThrow(() -> new RuntimeException("Failed to create client"));
 
         return ResponseEntity.status(HttpStatus.CREATED)

@@ -20,36 +20,34 @@ import java.util.Objects;
 @RestController
 @Slf4j
 @RequestMapping("/api/cases/webclient")
-public class LawyerWebClientController {
+public class LawClientWebClientController {
 
     private final String DESCRIPTION_404_ID = "LawCase was not found by id";
     private final String DESCRIPTION_500_SHORT = "Some internal server error";
     private final String DESCRIPTION_500_LONG = "Invalid input data or " + DESCRIPTION_500_SHORT;
-    private final String LAWYER_NUMBER_QUERY_PATH = "/{lawyerId}";
-    private final String LAWYER_NAME_VARIABLE_PATH = "lawyerId";
-
+    private final String LAWYER_NUMBER_QUERY_PATH = "/{lawClientId}";
     private final LawCaseService lawCaseService;
 
-    public LawyerWebClientController ( LawCaseService lawCaseService ) {
+    public LawClientWebClientController(LawCaseService lawCaseService) {
         this.lawCaseService = lawCaseService;
     }
 
     @Operation(
-            description = "Send LawCases to the Lawyer microservice by Lawyer Id"
+            description = "Send LawCases to the LawClient microservice by LawClient Id"
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "LawCases delivered by Id and attached to the Lawyer"),
+            @ApiResponse(responseCode = "200", description = "LawCases delivered by Id and attached to the LawClient"),
             @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_LONG)
     })
-    @GetMapping("/sendLawCasesToLawyerService" + LAWYER_NUMBER_QUERY_PATH)
+    @GetMapping("/sendLawCasesToLawCLientService" + LAWYER_NUMBER_QUERY_PATH)
     public ResponseEntity<List<LawCaseResponseDto>> getLawCasesByLawyerId(
-                  @PathVariable String lawyerId) {
+            @PathVariable String lawClientId) {
         List<LawCase> lawCasesToSend = lawCaseService.getAllLawCases()
                 .stream()
-                .filter(lawCase -> Objects.equals(lawCase.getLawClientId(), lawyerId))
+                .filter(lawCase -> Objects.equals(lawClientId, lawCase.getLawClientId()))
                 .toList();
-        log.info("Sent {} LawCases to Lawyer with id: {}", lawCasesToSend.size(), lawyerId);
+        log.info("List of LawCases were send to the LawClient with id: {}!", lawClientId);
         List<LawCaseResponseDto> dtos = lawCasesToSend
                 .stream()
                 .map(LawCaseMapper::toDto)

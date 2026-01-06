@@ -1,4 +1,4 @@
-package org.example.lawclientservice.controller;
+package org.example.lawclientservice.controller.mapper;
 
 import org.example.lawclientservice.domain.LawCase;
 import org.example.lawclientservice.domain.LawClient;
@@ -18,7 +18,7 @@ public class LawClientMapper {
         List<LawCase> lawCases = new ArrayList<>();
         if (dto.getLawCases() != null) {
             lawCases = dto.getLawCases().stream()
-                    .map(LawClientMapper::toEntity)
+                    .map(LawClientMapper::toEntityLawCase)
                     .collect(Collectors.toList());
         }
 
@@ -28,7 +28,7 @@ public class LawClientMapper {
                 .build();
     }
 
-    private static LawCase toEntity( LawCaseDto dto) {
+    private static LawCase toEntityLawCase(LawCaseDto dto) {
         if (dto == null) return null;
 
         return LawCase.builder()
@@ -39,7 +39,7 @@ public class LawClientMapper {
     }
 
     // === Entity → Response DTO ===
-    public static LawClientResponseDto toDto( LawClient entity) {
+    public static LawClientResponseDto toDto(LawClient entity) {
         if (entity == null) return null;
 
         List<LawCaseDto> lawCases = new ArrayList<>();

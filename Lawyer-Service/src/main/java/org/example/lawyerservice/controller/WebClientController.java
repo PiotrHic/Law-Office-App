@@ -33,7 +33,6 @@ public class WebClientController {
     private final String DESCRIPTION_404_ID = "Lawyer was not found by id";
     private final String DESCRIPTION_500_SHORT = "Some internal server error";
     private final String NUMBER_QUERY_PATH = "/{lawyerId}";
-    private final String NUMBER_VARIABLE_PATH = "lawyerId";
 
     private final LawCaseWebClient lawCaseWebClient;
     private final LawyerService lawyerService;
