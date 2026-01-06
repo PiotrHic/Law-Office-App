@@ -7,6 +7,7 @@ import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @HttpExchange
@@ -15,5 +16,5 @@ public interface LawCaseWebClient {
     static String ID_PATH = "/{lawClientId}";
 
     @GetExchange("/api/cases/webclient/sendLawCasesToLawCLientService" + ID_PATH)
-    public List<LawCaseDto> getLawCasesByLawClientId(@PathVariable String lawClientId);
+    public List<LawCaseDto> getLawCasesByLawClientId(@PathVariable UUID lawClientId);
 }

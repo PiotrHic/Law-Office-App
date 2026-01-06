@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class LawClientServiceImpl implements LawClientService {
     @Timed(value = "lawclient.create", percentiles = {0.95, 0.99})
     public Optional<LawClient> createClient(LawClient lawClient) {
         log.info("Creating LawClient with name='{}'", lawClient.getName());
+        if (lawClient.getId() == null) {
+            lawClient.setId(UUID.randomUUID());
+        }
         LawClient saved = repository.save(lawClient);
         log.info("LawClient created with id={}", saved.getId());
         return Optional.of(saved);
@@ -32,7 +36,7 @@ public class LawClientServiceImpl implements LawClientService {
     // READ by ID
     @Override
     @Timed(value = "lawclient.getById", percentiles = {0.95, 0.99})
-    public Optional<LawClient> getLawClientByID(String lawClientId) {
+    public Optional<LawClient> getLawClientByID(UUID lawClientId) {
         log.debug("Fetching LawClient by id={}", lawClientId);
         return repository.findById(lawClientId);
     }
@@ -56,7 +60,7 @@ public class LawClientServiceImpl implements LawClientService {
     // UPDATE by ID
     @Override
     @Timed(value = "lawclient.update", percentiles = {0.95, 0.99})
-    public Optional<LawClient> updateLawClientById(String lawClientId, LawClient lawClient) {
+    public Optional<LawClient> updateLawClientById(UUID lawClientId, LawClient lawClient) {
         log.info("Updating LawClient id={}", lawClientId);
         return repository.findById(lawClientId)
                 .map(existing -> {
@@ -71,7 +75,7 @@ public class LawClientServiceImpl implements LawClientService {
     // DELETE by ID
     @Override
     @Timed(value = "lawclient.delete", percentiles = {0.95, 0.99})
-    public Optional<LawClient> deleteLawClientById(String lawClientId) {
+    public Optional<LawClient> deleteLawClientById(UUID lawClientId) {
         log.info("Deleting LawClient id={}", lawClientId);
         return repository.findById(lawClientId)
                 .map(client -> {

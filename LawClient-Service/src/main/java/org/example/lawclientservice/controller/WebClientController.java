@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -53,7 +54,7 @@ public class WebClientController {
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
     @GetMapping("/getLawCases" + NUMBER_QUERY_PATH)
-    ResponseEntity<LawClientResponseDto> getLawCaseByLawClientId(@PathVariable String lawClientId){
+    ResponseEntity<LawClientResponseDto> getLawCaseByLawClientId(@PathVariable UUID lawClientId){
 
         log.info("GET /client/{}", lawClientId);
 

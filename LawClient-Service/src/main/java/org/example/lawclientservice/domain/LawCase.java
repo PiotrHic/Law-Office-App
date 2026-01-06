@@ -5,14 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class LawCase {
 
-    private String id;
+    private UUID id;
     private String name;
-    private String lawyerId;
+    private UUID lawyerId;
     private Lawyer lawyer;
 }

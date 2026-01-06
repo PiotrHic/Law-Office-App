@@ -109,7 +109,8 @@ public class LawyerController {
         return ResponseEntity.ok(clients);
     }
 
-    @Operation(summary = "Update lawyer", description = "Updates lawyer data by the given Id - GET /api/lawyers")
+    @Operation(summary = "Update lawyer", description = "Updates lawyer data by the given Id " +
+            "- PUT /api/lawyers/{id}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lawyer was updated by Id"),
             @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
@@ -117,7 +118,7 @@ public class LawyerController {
     })
     @PutMapping(PATH_ID)
     public ResponseEntity<LawyerResponseDto> updateLawyer(
-            @PathVariable UUID  id,
+            @PathVariable UUID id,
             @Valid @RequestBody LawyerRequestDto requestDto) {
 
         log.info("PUT api/lawyers/{}", id);
