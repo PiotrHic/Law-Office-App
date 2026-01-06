@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LawCaseMapper {
 
-    public static LawCaseResponseDto toDTO( LawCase lawcase) {
+    public static LawCaseResponseDto toDTO(LawCase lawcase) {
         if(lawcase == null) {
             return null;
         }

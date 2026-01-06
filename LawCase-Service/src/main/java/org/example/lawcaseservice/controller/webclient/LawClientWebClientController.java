@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -42,7 +43,7 @@ public class LawClientWebClientController {
     })
     @GetMapping("/sendLawCasesToLawCLientService" + LAWYER_NUMBER_QUERY_PATH)
     public ResponseEntity<List<LawCaseResponseDto>> getLawCasesByLawyerId(
-            @PathVariable String lawClientId) {
+            @PathVariable UUID lawClientId) {
         List<LawCase> lawCasesToSend = lawCaseService.getAllLawCases()
                 .stream()
                 .filter(lawCase -> Objects.equals(lawClientId, lawCase.getLawClientId()))

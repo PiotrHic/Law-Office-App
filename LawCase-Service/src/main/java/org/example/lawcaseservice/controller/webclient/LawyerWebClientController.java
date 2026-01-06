@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -26,7 +27,6 @@ public class LawyerWebClientController {
     private final String DESCRIPTION_500_SHORT = "Some internal server error";
     private final String DESCRIPTION_500_LONG = "Invalid input data or " + DESCRIPTION_500_SHORT;
     private final String LAWYER_NUMBER_QUERY_PATH = "/{lawyerId}";
-    private final String LAWYER_NAME_VARIABLE_PATH = "lawyerId";
 
     private final LawCaseService lawCaseService;
 
@@ -44,7 +44,7 @@ public class LawyerWebClientController {
     })
     @GetMapping("/sendLawCasesToLawyerService" + LAWYER_NUMBER_QUERY_PATH)
     public ResponseEntity<List<LawCaseResponseDto>> getLawCasesByLawyerId(
-                  @PathVariable String lawyerId) {
+                  @PathVariable UUID lawyerId) {
         List<LawCase> lawCasesToSend = lawCaseService.getAllLawCases()
                 .stream()
                 .filter(lawCase -> Objects.equals(lawCase.getLawClientId(), lawyerId))

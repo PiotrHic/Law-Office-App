@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.lawyerservice.domain.LawClient;
+import org.example.lawyerservice.domain.Lawyer;
 
 import java.util.UUID;
 
@@ -22,5 +24,10 @@ public class LawCaseDto {
     private String name;
 
     @NotBlank(message = "LawyerId cannot be blank")
-    private String lawyerId;
+    private UUID lawyerId;
+
+    private Lawyer lawyer;
+    private UUID lawClientId;
+    private LawClient lawClient;
 }
+

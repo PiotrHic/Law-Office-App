@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.example.lawcaseservice.domain.LawClient;
 import org.example.lawcaseservice.domain.Lawyer;
 
-import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -20,8 +20,8 @@ public class LawCaseRequestDto {
     @NotBlank(message = "Name cannot be blank")
     @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
-    private String lawyerId;
-    private String lawClientId;
+    private UUID lawyerId;
+    private UUID lawClientId;
     private Lawyer lawyer;
     private LawClient lawClient;
 }

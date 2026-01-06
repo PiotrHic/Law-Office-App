@@ -15,6 +15,9 @@ public class LawCaseMapper {
                 .id(lawcase.getId())
                 .name(lawcase.getName())
                 .lawyerId(lawcase.getLawyerId())
+                .lawyer(lawcase.getLawyer())
+                .lawClientId(lawcase.getLawClientId())
+                .lawClient(lawcase.getLawClient())
                 .build();
     }
 
@@ -26,6 +29,9 @@ public class LawCaseMapper {
                 .id(dto.getId())
                 .name(dto.getName())
                 .lawyerId(dto.getLawyerId())
+                .lawyer(dto.getLawyer())
+                .lawClientId(dto.getLawClientId())
+                .lawClient(dto.getLawClient())
                 .build();
     }
 

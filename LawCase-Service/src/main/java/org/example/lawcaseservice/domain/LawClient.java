@@ -2,6 +2,8 @@ package org.example.lawcaseservice.domain;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -9,7 +11,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class LawClient {
 
-    private String id;
+    private UUID id;
     private String name;
 
 }

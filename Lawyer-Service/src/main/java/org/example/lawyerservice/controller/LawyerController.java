@@ -30,6 +30,7 @@ public class LawyerController {
 
     private final String DESCRIPTION_404_ID = "Lawyer was not found by id";
     private final String DESCRIPTION_500_SHORT = "Some internal server error";
+    private final String PATH_ID = "/{id}";
 
     private final LawyerService service;
 
@@ -61,7 +62,7 @@ public class LawyerController {
             @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
-    @GetMapping("/by-id/{id}")
+    @GetMapping("/by-id" + PATH_ID)
     public ResponseEntity<LawyerResponseDto> getLawyerById(@PathVariable UUID id) {
         log.info("GET /lawyers/{}", id);
 
@@ -114,7 +115,7 @@ public class LawyerController {
             @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     public ResponseEntity<LawyerResponseDto> updateLawyer(
             @PathVariable UUID  id,
             @Valid @RequestBody LawyerRequestDto requestDto) {
@@ -134,7 +135,7 @@ public class LawyerController {
             @ApiResponse(responseCode = "404", description = DESCRIPTION_404_ID),
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     public ResponseEntity<Void> deleteLawyer(@PathVariable UUID id) {
         log.info("DELETE api/lawyers/{}", id);
 

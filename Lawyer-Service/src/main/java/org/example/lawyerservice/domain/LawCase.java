@@ -17,7 +17,8 @@ public class LawCase {
 
     private UUID id;
     private String name;
-    private String lawyerId;
-    //private String lawClientId;
-    // private Object lawClient;
+    private UUID lawyerId;
+    private Lawyer lawyer;
+    private UUID lawClientId;
+    private LawClient lawClient;
 }
