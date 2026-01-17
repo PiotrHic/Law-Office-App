@@ -18,7 +18,6 @@ import java.util.Map;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    // 400 – DTO validation (@Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex,
@@ -43,7 +42,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 404 – brak zasobu
     @ExceptionHandler(LawyerNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(
             LawyerNotFoundException ex,
@@ -62,7 +60,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 400 – walidacja path / request param
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(
             ConstraintViolationException ex,
@@ -81,7 +78,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 500 – wszystko inne
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex,

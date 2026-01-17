@@ -28,4 +28,5 @@ public class Lawyer {
     @Size(min=4, message = "Name must have at least 4 characters!")
     private String name;
     private List<LawCase> lawCaseList;
+
 }
