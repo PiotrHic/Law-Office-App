@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.example.lawcaseservice.client.dto.LawCaseResponseDto;
-import org.example.lawcaseservice.controller.LawCaseMapper;
+import org.example.lawcaseservice.controller.mapper.LawCaseMapper;
 import org.example.lawcaseservice.domain.LawCase;
 import org.example.lawcaseservice.service.LawCaseService;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +44,7 @@ public class LawyerWebClientController {
     })
     @GetMapping("/sendLawCasesToLawyerService" + LAWYER_NUMBER_QUERY_PATH)
     public ResponseEntity<List<LawCaseResponseDto>> getLawCasesByLawyerId(
-                  @PathVariable UUID lawyerId) {
+            @PathVariable UUID lawyerId) {
         List<LawCase> lawCasesToSend = lawCaseService.getAllLawCases()
                 .stream()
                 .filter(lawCase -> Objects.equals(lawCase.getLawClientId(), lawyerId))

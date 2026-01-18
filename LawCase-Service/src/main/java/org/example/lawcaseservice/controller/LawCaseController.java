@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.example.lawcaseservice.client.dto.LawCaseRequestDto;
 import org.example.lawcaseservice.client.dto.LawCaseResponseDto;
+import org.example.lawcaseservice.controller.mapper.LawCaseMapper;
 import org.example.lawcaseservice.domain.LawCase;
 import org.example.lawcaseservice.exception.LawCaseNotFoundException;
 import org.example.lawcaseservice.service.LawCaseService;
@@ -47,7 +48,7 @@ public class LawCaseController {
 
         log.info("POST /lawCase with name={}", requestDto.getName());
 
-        LawCase saved = service.createLawCase(LawCaseMapper.toEntity(requestDto))
+        LawCase saved = service.createLawCase( LawCaseMapper.toEntity(requestDto))
                 .orElseThrow(() -> new RuntimeException("Failed to create lawCase"));
 
         return ResponseEntity.status(HttpStatus.CREATED)

@@ -6,19 +6,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Parent Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.12</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>org.example</groupId>
     <artifactId>LawCase-Service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>LawCase-Service</name>
-    <description>LawCase-Service</description>
 
     <properties>
         <java.version>17</java.version>
@@ -27,7 +24,8 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Web / REST -->
+
+        <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -51,13 +49,13 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- Spring Cloud Circuit Breaker -->
+        <!-- CircuitBreaker -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
         </dependency>
 
-        <!-- Metrics / Tracing -->
+        <!-- Tracing -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -80,7 +78,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- OpenAPI / Swagger -->
+        <!-- Swagger / OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -93,15 +91,23 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <!-- Testy -->
+        <!-- TESTS – tylko to jest potrzebne -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Embedded Mongo for @DataMongoTest -->
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>4.9.2</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
-    <!-- Spring Cloud BOM -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -116,7 +122,8 @@
 
     <build>
         <plugins>
-            <!-- Kompilator z Lombok -->
+
+            <!-- Java build + Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -124,7 +131,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <!-- Opcjonalnie, Lombok działa też bez annotationProcessorPaths -->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -135,19 +141,12 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot Maven Plugin -->
+            <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
+
         </plugins>
     </build>
 
