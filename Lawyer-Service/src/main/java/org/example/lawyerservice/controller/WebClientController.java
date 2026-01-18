@@ -1,6 +1,8 @@
 package org.example.lawyerservice.controller;
 
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,6 +25,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +46,6 @@ public class WebClientController {
         this.lawyerService = lawyerService;
     }
 
-
     @Operation(
             description = "Send Request to the LawCase Service to bring the list " +
                     "of LawCases to the Lawyer by the Lawyer id - /api/lawyer/webclient/getLawCases/1"
@@ -55,6 +57,8 @@ public class WebClientController {
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
     @GetMapping("/getLawCases" + NUMBER_QUERY_PATH)
+    @CircuitBreaker(name = "lawCaseService", fallbackMethod = "fallbackGetLawCases")
+    @Retry(name = "lawCaseService")
     ResponseEntity<LawyerResponseDto> getLawCaseByLawyerId(@PathVariable UUID lawyerId){
 
         log.info("GET /lawyers/{}", lawyerId);
@@ -80,6 +84,19 @@ public class WebClientController {
         founded.setLawCaseList(lawCases);
         lawyerService.updateLawyerById(lawyerId, founded);
         log.info("LawCases were attached to Lawyer by the lawyerID : {}!", lawyerId);
+        return ResponseEntity.ok(LawyerMapper.toDto(founded));
+    }
+
+    // Fallback metoda
+    public ResponseEntity<LawyerResponseDto> fallbackGetLawCases(UUID lawyerId, Throwable ex) {
+        log.warn("Fallback triggered for lawyerId={} due to {}", lawyerId, ex.toString());
+
+        Lawyer founded = lawyerService.getLawyerById(lawyerId)
+                .orElseThrow(() -> new LawyerNotFoundException("Lawyer not found with id=" + lawyerId));
+
+        // fallback = pusta lista spraw
+        founded.setLawCaseList(Collections.emptyList());
+
         return ResponseEntity.ok(LawyerMapper.toDto(founded));
     }
 }

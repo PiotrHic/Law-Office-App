@@ -1,6 +1,7 @@
 package org.example.lawyerservice.client.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +24,17 @@ public class LawCaseDto {
     @Size(min = 3, message = "Law case name must be at least 3 characters long")
     private String name;
 
-    @NotBlank(message = "LawyerId cannot be blank")
+    @NotNull(message = "LawyerId cannot be blank")
     private UUID lawyerId;
 
     private Lawyer lawyer;
     private UUID lawClientId;
     private LawClient lawClient;
+
+    public LawCaseDto (UUID id, String name, UUID lawyerId ) { // for tests
+        this.name = name;
+        this.id = id;
+        this.lawyerId = lawyerId;
+    }
 }
 

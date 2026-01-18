@@ -15,10 +15,17 @@ public class LawCase {
         this.name = name;
     }
 
+    public LawCase(UUID id, String name, UUID lawyerId) {
+        this.id = id;
+        this.name = name;
+        this.lawyerId = lawyerId;
+    }
+
     private UUID id;
     private String name;
     private UUID lawyerId;
     private Lawyer lawyer;
     private UUID lawClientId;
     private LawClient lawClient;
+
 }
