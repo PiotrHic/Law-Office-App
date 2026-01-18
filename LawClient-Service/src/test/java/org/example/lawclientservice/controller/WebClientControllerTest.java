@@ -1,23 +1,29 @@
 package org.example.lawclientservice.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.lawclientservice.client.dto.LawCaseDto;
+import org.example.lawclientservice.client.dto.LawClientResponseDto;
+import org.example.lawclientservice.client.webclient.LawCaseWebClient;
+import org.example.lawclientservice.domain.LawCase;
 import org.example.lawclientservice.domain.LawClient;
 import org.example.lawclientservice.service.LawClientService;
-import org.example.lawyerservice.client.dto.LawCaseDto;
-import org.example.lawyerservice.client.webclient.LawCaseWebClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
-import java.nio.charset.StandardCharsets;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(WebClientController.class)
 class WebClientControllerTest {
@@ -31,80 +37,57 @@ class WebClientControllerTest {
     @MockBean
     private LawCaseWebClient lawCaseWebClient;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private UUID clientId;
+    private LawClient lawClient;
 
-    // @Test
-    void getLawCasesByLawClientId_ShouldReturn200() throws Exception {
-        UUID id = UUID.randomUUID();
+    @BeforeEach
+    void setUp() {
+        clientId = UUID.randomUUID();
+        lawClient = new LawClient(clientId, "John Doe");
+    }
 
-        LawClient client = LawClient.builder()
-                .id(id)
-                .name("Adam Nowak")
-                .lawCases(List.of())
-                .build();
+    @Test
+    void shouldReturnLawCasesForClient() throws Exception {
+        // Mock klienta
+        when(lawClientService.getLawClientByID(clientId))
+                .thenReturn(Optional.of(lawClient));
 
-        when(lawClientService.getLawClientByID(id)).thenReturn(Optional.of(client));
+        // Mock WebClient – zwraca listę spraw
+        when(lawCaseWebClient.getLawCasesByLawClientId(clientId))
+                .thenReturn(List.of(
+                        new LawCaseDto(UUID.randomUUID(), "Test Case", clientId)
+                ));
 
-        LawCaseDto caseDto = LawCaseDto.builder()
-                .id(UUID.randomUUID())
-                .name("Case A")
-                .lawClientId(id)
-                .build();
-
-        when(lawCaseWebClient.getLawCasesByLawyerId(id)).thenReturn(List.of(caseDto));
-        when(lawClientService.updateLawClientById(eq(id), any())).thenReturn(Optional.of(client));
-
-        mockMvc.perform(get("/api/clients/webclient/getLawCases/{lawClientId}", id))
+        // Wykonanie GET i weryfikacja JSON
+        mockMvc.perform(get("/api/clients/webclient/getLawCases/{lawClientId}", clientId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id.toString()))
-                .andExpect(jsonPath("$.name").value("Adam Nowak"))
-                .andExpect(jsonPath("$.lawCases[0].name").value("Case A"));
-
-        verify(lawClientService).getLawClientByID(id);
-        verify(lawCaseWebClient).getLawCasesByLawyerId(id);
-        verify(lawClientService).updateLawClientById(eq(id), any());
+                .andExpect(jsonPath("$.name").value("John Doe"))
+                .andExpect(jsonPath("$.lawCases[0].name").value("Test Case"));
     }
 
-    // @Test
-    void getLawCasesByLawClientId_ShouldReturn404_WhenClientNotFound() throws Exception {
-        UUID id = UUID.randomUUID();
+    @Test
+    void fallbackShouldReturnEmptyList() {
+        // Mock klienta
+        when(lawClientService.getLawClientByID(clientId)).thenReturn(Optional.of(lawClient));
 
-        when(lawClientService.getLawClientByID(id)).thenReturn(Optional.empty());
+        WebClientController controller = new WebClientController(lawCaseWebClient, lawClientService);
 
-        mockMvc.perform(get("/api/clients/webclient/getLawCases/{lawClientId}", id))
+        // Wywołanie fallbacka ręcznie
+        ResponseEntity<LawClientResponseDto> response =
+                controller.fallbackGetLawCases(clientId, new RuntimeException("Service down"));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getName()).isEqualTo("John Doe");
+        assertThat(response.getBody().getLawCases()).isEmpty(); // <- fallback zwraca pustą listę
+    }
+
+    @Test
+    void shouldReturn404WhenClientNotFound() throws Exception {
+        when(lawClientService.getLawClientByID(clientId))
+                .thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/clients/webclient/getLawCases/{lawClientId}", clientId))
                 .andExpect(status().isNotFound());
-
-        verify(lawClientService).getLawClientByID(id);
-        verifyNoInteractions(lawCaseWebClient);
-    }
-
-    // @Test
-    void getLawCasesByLawClientId_ShouldReturn502_WhenWebClientFails() throws Exception {
-        UUID id = UUID.randomUUID();
-
-        LawClient client = LawClient.builder()
-                .id(id)
-                .name("Adam Nowak")
-                .lawCases(List.of())
-                .build();
-
-        when(lawClientService.getLawClientByID(id)).thenReturn(Optional.of(client));
-
-        WebClientResponseException exception = WebClientResponseException.create(
-                500,
-                "Internal Error",
-                null,
-                "Service down".getBytes(),
-                StandardCharsets.UTF_8
-        );
-
-        doThrow(exception).when(lawCaseWebClient).getLawCasesByLawyerId(id);
-
-        mockMvc.perform(get("/api/clients/webclient/getLawCases/{lawClientId}", id))
-                .andExpect(status().isBadGateway());
-
-        verify(lawClientService).getLawClientByID(id);
-        verify(lawCaseWebClient).getLawCasesByLawyerId(id);
     }
 }

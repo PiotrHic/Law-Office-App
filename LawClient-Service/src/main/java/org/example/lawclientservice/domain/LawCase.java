@@ -13,8 +13,15 @@ import java.util.UUID;
 @Builder
 public class LawCase {
 
+    public LawCase ( UUID id, String name, UUID lawyerId ) {
+        this.id = id;
+        this.name = name;
+        this.lawyerId = lawyerId;
+    }
+
     private UUID id;
     private String name;
     private UUID lawyerId;
     private Lawyer lawyer;
+
 }

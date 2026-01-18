@@ -1,5 +1,7 @@
 package org.example.lawclientservice.controller;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +24,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,6 +57,8 @@ public class WebClientController {
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_SHORT)
     })
     @GetMapping("/getLawCases" + NUMBER_QUERY_PATH)
+    @CircuitBreaker(name = "lawCaseService", fallbackMethod = "fallbackGetLawCases")
+    @Retry(name = "lawCaseService")
     ResponseEntity<LawClientResponseDto> getLawCaseByLawClientId(@PathVariable UUID lawClientId){
 
         log.info("GET /client/{}", lawClientId);
@@ -79,6 +84,19 @@ public class WebClientController {
         founded.setLawCases(lawCases);
         lawClientService.updateLawClientById(lawClientId, founded);
         log.info("LawCases were attached to LawClient by the lawClientID : {}!", lawClientId);
+        return ResponseEntity.ok(LawClientMapper.toDto(founded));
+    }
+
+    // Fallback method
+    public ResponseEntity<LawClientResponseDto> fallbackGetLawCases(UUID lawClientId, Throwable ex) {
+        log.warn("Fallback triggered for lawClientId={} due to {}", lawClientId, ex.toString());
+
+        LawClient founded = lawClientService.getLawClientByID(lawClientId)
+                .orElseThrow(() -> new LawClientNotFoundException("LawClient not found with id=" + lawClientId));
+
+        // fallback = pusta lista spraw
+        founded.setLawCases(Collections.emptyList());
+
         return ResponseEntity.ok(LawClientMapper.toDto(founded));
     }
 }

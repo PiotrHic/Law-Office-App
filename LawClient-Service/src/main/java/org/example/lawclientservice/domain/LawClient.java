@@ -18,10 +18,16 @@ import java.util.UUID;
 @Builder
 public class LawClient {
 
+    public LawClient ( UUID id, String name ) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Id
     private UUID id;
     @NotBlank(message = "Name cannot be blank")
     @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
     private List<LawCase> lawCases;
+
 }
