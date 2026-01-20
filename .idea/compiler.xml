@@ -18,7 +18,7 @@
         </processorPath>
         <module name="LawClient-Service" />
       </profile>
-      <profile name="Annotation profile for Lawyer-Service" enabled="true">
+      <profile name="Annotation profile for LawCase-Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />

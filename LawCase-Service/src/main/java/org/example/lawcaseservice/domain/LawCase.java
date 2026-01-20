@@ -22,6 +22,12 @@ public class LawCase {
         this.name = name;
     }
 
+    public LawCase (UUID id, String name, UUID lawyerId) {
+        this.name = name;
+        this.lawyerId = lawyerId;
+        this.id = id;
+    }
+
     @Id
     private UUID id;
     @Indexed(unique = true)
@@ -40,4 +46,5 @@ public class LawCase {
         this.lawyer = lawyer;
         this.lawClient = lawClient;
     }
+
 }

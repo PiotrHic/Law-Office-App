@@ -1,5 +1,7 @@
 package org.example.lawcaseservice.controller.webclient;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -43,6 +46,8 @@ public class LawyerWebClientController {
             @ApiResponse(responseCode = "500", description = DESCRIPTION_500_LONG)
     })
     @GetMapping("/sendLawCasesToLawyerService" + LAWYER_NUMBER_QUERY_PATH)
+    @CircuitBreaker(name = "lawCaseServiceCB", fallbackMethod = "fallbackLawCases")
+    @Retry(name = "lawCaseServiceRetry")
     public ResponseEntity<List<LawCaseResponseDto>> getLawCasesByLawyerId(
             @PathVariable UUID lawyerId) {
         List<LawCase> lawCasesToSend = lawCaseService.getAllLawCases()
@@ -55,5 +60,11 @@ public class LawyerWebClientController {
                 .map(LawCaseMapper::toDto)
                 .toList();
         return ResponseEntity.ok((dtos));
+    }
+
+    // Fallback – jeśli serwis padnie, zwracamy pustą listę
+    public ResponseEntity<List<LawCaseResponseDto>> fallbackLawCases(UUID lawyerId, Throwable t) {
+        log.warn("Fallback triggered for lawyerId {} due to {}", lawyerId, t.getMessage());
+        return ResponseEntity.ok(Collections.emptyList());
     }
 }
